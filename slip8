@@ -1,0 +1,25 @@
+class PrintThread extends Thread {
+    String msg; int times;
+    PrintThread(String msg,int times) { this.msg=msg; this.times=times; }
+    public void run() { for(int i=0;i<times;i++) System.out.println(msg); }
+}
+public class Slip8Q1 {
+    public static void main(String[] args) {
+        new PrintThread("COVID19",10).start();
+        new PrintThread("LOCKDOWN2020",20).start();
+        new PrintThread("VACCINATED2021",30).start();
+    }
+}
+
+<form method=post>
+  Enter number: <input type=text name=num>
+  <input type=submit value=Check>
+</form>
+<%
+  String n = request.getParameter("num");
+  if(n!=null){
+      int num = Integer.parseInt(n);
+      boolean prime = num>1 && java.math.BigInteger.valueOf(num).isProbablePrime(10);
+      out.print("<span style='color:red'>"+(prime?"Prime":"Not Prime")+"</span>");
+  }
+%>
