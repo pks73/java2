@@ -1,0 +1,36 @@
+<!-- search.html -->
+<form action="SearchServlet" method="get">
+  Customer No: <input type=text name=cid> <input type=submit>
+</form>
+
+// Servlet
+@WebServlet("/SearchServlet")
+public class SearchServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        String cid = req.getParameter("cid");
+        try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost/db","root","");
+            PreparedStatement ps=con.prepareStatement("select * from customer where cid=?")){
+            ps.setInt(1,Integer.parseInt(cid));
+            ResultSet rs=ps.executeQuery();
+            res.setContentType("text/html");
+            PrintWriter out=res.getWriter();
+            if(rs.next()) out.print(rs.getString(2)+" "+rs.getFloat(3));
+            else out.print("Customer not found");
+        }catch(Exception e){}
+    }
+}
+
+---------
+
+import java.sql.*;
+public class Slip11Q2 {
+    public static void main(String[] args) throws SQLException {
+        try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost/db","root","");
+            Statement st=con.createStatement();
+            ResultSet rs=st.executeQuery("select * from donar")){
+            ResultSetMetaData rsmd = rs.getMetaData();
+            for(int i=1;i<=rsmd.getColumnCount();i++)
+                System.out.println(rsmd.getColumnName(i)+" : "+rsmd.getColumnTypeName(i));
+        }
+    }
+}
