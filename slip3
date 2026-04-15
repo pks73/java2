@@ -1,0 +1,70 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Patient Details</title>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 80%;
+                margin: 20px auto;
+            }
+            th, td {
+                border: 1px solid #333;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="text-align:center;">Patient Records</h1>
+        <%
+            // Creating a list of patients using a 2D array for simplicity
+            // Each inner array: {PNo, PName, Address, Age, Disease}
+            String[][] patients = {
+                {"1", "John", "123 Street, NY", "45", "COVID-19"},
+                {"2", "Brock", "456 Avenue, LA", "48", "Cancer"},
+                {"3", "Emma", "789 Boulevard, TX", "32", "Diabetes"}
+            };
+        %>
+        <table border="1">
+            <tr>
+                <th>PNo</th>
+                <th>PName</th>
+                <th>Address</th>
+                <th>Age</th>
+                <th>Disease</th>
+            </tr>
+            <%
+                for (String[] patient : patients) {
+            %>
+            <tr>
+                <td><%= patient[0] %></td>
+                <td><%= patient[1] %></td>
+                <td><%= patient[2] %></td>
+                <td><%= patient[3] %></td>
+                <td><%= patient[4] %></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+    </body>
+</html>
+
+
+
+import java.util.*;
+public class Slip3Q2 {
+    public static void main(String[] args) {
+        LinkedList<String> list = new LinkedList<>();
+        list.addLast("End1"); list.addLast("End2");
+        list.removeFirst();
+        Collections.reverse(list);
+        System.out.println(list);
+    }
+}
