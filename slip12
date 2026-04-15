@@ -1,0 +1,129 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Perfect Number Checker</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+                background-color: #f4f4f9;
+            }
+            h1 {
+                color: #2c3e50;
+            }
+            form {
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                width: 300px;
+            }
+            input[type="number"] {
+                padding: 8px;
+                width: 180px;
+                margin: 10px 0;
+            }
+            input[type="submit"] {
+                background-color: #3498db;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            input[type="submit"]:hover {
+                background-color: #2980b9;
+            }
+            .result {
+                margin-top: 20px;
+                padding: 10px;
+                background: #ecf0f1;
+                border-left: 5px solid #3498db;
+                border-radius: 4px;
+                width: 300px;
+            }
+            .error {
+                border-left-color: #e74c3c;
+                color: #c0392b;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Is Perfect Number?</h1>
+        <form method="post">
+            Enter a number: 
+            <input type="number" name="num" step="1" required>
+            <input type="submit" value="Check">
+        </form>
+
+        <%
+            String numStr = request.getParameter("num");
+            if (numStr != null && !numStr.trim().isEmpty()) {
+                try {
+                    int n = Integer.parseInt(numStr.trim());
+                    if (n <= 0) {
+        %>
+                        <div class="result error">
+                            Please enter a <strong>positive integer</strong> greater than zero.
+                        </div>
+        <%
+                    } else {
+                        // Perfect number logic: sum of proper divisors equals the number itself
+                        int sum = 0;
+                        for (int i = 1; i <= n / 2; i++) {
+                            if (n % i == 0) {
+                                sum += i;
+                            }
+                        }
+                        if (sum == n) {
+        %>
+                            <div class="result">
+                                <strong><%= n %></strong> is a <strong>Perfect Number</strong>.
+                                (1 + 2 + 3 + ... = <%= n %>)
+                            </div>
+        <%
+                        } else {
+        %>
+                            <div class="result error">
+                                <strong><%= n %></strong> is <strong>NOT</strong> a perfect number.
+                                Sum of proper divisors = <%= sum %>.
+                            </div>
+        <%
+                        }
+                    }
+                } catch (NumberFormatException e) {
+        %>
+                    <div class="result error">
+                        Invalid input. Please enter a valid integer.
+                    </div>
+        <%
+                }
+            }
+        %>
+    </body>
+</html>
+
+------------
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+public class Slip12Q2 extends JFrame {
+    JTable table; DefaultTableModel model;
+    public Slip12Q2() throws SQLException {
+        try(Connection con=DriverManager.getConnection("jdbc:mysql://localhost/db","root","");
+            Statement st=con.createStatement()){
+            st.execute("create table if not exists PROJECT(project_id int primary key, project_name varchar(20), project_description varchar(100), project_status varchar(10))");
+            st.executeUpdate("insert into PROJECT values(1,'A','desc1','Active'),(2,'B','desc2','Inactive')");
+            ResultSet rs = st.executeQuery("select * from PROJECT");
+            model = new DefaultTableModel(new String[]{"ID","Name","Desc","Status"},0);
+            while(rs.next()) model.addRow(new Object[]{rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4)});
+            table = new JTable(model);
+            add(new JScrollPane(table));
+            setSize(500,300); setVisible(true);
+        }
+    }
+    public static void main(String[] args) throws SQLException { new Slip12Q2(); }
+}
