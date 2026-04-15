@@ -1,0 +1,25 @@
+import java.util.*;
+public class Slip2Q1 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Set<String> set = new HashSet<>();
+        System.out.print("Enter N: "); int n = sc.nextInt(); sc.nextLine();
+        for(int i=0;i<n;i++) set.add(sc.nextLine());
+        List<String> list = new ArrayList<>(set);
+        Collections.sort(list);
+        list.forEach(System.out::println);
+    }
+}
+
+// web.xml mapping omitted for brevity
+@WebServlet("/info")
+public class Slip2Q2 extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        out.println("IP: "+req.getRemoteAddr()+"<br>Browser: "+req.getHeader("User-Agent"));
+        out.println("OS: "+System.getProperty("os.name")+"<br>Loaded Servlets: ");
+        for (ServletMapping mapping : getServletContext().getServletRegistrations().values())
+            out.print(mapping.getClassName()+" ");
+    }
+}
