@@ -1,0 +1,28 @@
+import java.util.Random;
+public class Slip7Q1 {
+    public static void main(String[] args) {
+        Random rand = new Random();
+        new Thread(() -> {
+            while(true) {
+                int num = rand.nextInt(100);
+                System.out.println("Generated: "+num);
+                if(num%2==0) new Thread(() -> System.out.println("Square: "+num*num)).start();
+                else new Thread(() -> System.out.println("Cube: "+num*num*num)).start();
+                try{Thread.sleep(1000);}catch(Exception e){}
+            }
+        }).start();
+    }
+}
+
+import java.sql.*;
+public class Slip7Q2 {
+    public static void main(String[] args) throws SQLException {
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/db","root","");
+            Statement st = con.createStatement()) {
+            st.execute("create table Product(Pid int primary key, Pname varchar(20), Price float)");
+            st.executeUpdate("insert into Product values(1,'A',100),(2,'B',200),(3,'C',300),(4,'D',400),(5,'E',500)");
+            ResultSet rs = st.executeQuery("select * from Product");
+            while(rs.next()) System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getFloat(3));
+        }
+    }
+}
